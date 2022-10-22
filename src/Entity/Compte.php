@@ -2,41 +2,62 @@
 
 namespace App\Entity;
 
-use App\Repository\CompteRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Agence;
+use App\Entity\Client;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CompteRepository;
+use Doctrine\ORM\Mapping\InheritanceType;
+use Doctrine\ORM\Mapping\DiscriminatorMap;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping\DiscriminatorColumn;
+use Doctrine\Common\Collections\ArrayCollection;
+
 
 #[ORM\Entity(repositoryClass: CompteRepository::class)]
+#[InheritanceType("JOINED")]
+#[DiscriminatorColumn("type_cpt")]
+#[DiscriminatorMap([
+    "compte"=>"Compte",
+    "epargne"=>"Epargne",
+    "cheque"=>"Cheque"
+])]
+
 class Compte
 {
+
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    protected ?int $id = null;
 
     #[ORM\Column(length: 12)]
-    private ?string $numero = null;
+    protected ?string $numero = null;
 
     #[ORM\Column]
-    private ?float $solde = null;
+    protected ?float $solde = null;
 
     #[ORM\Column(length: 12)]
-    private ?string $type = null;
-
-    #[ORM\OneToMany(mappedBy: 'compte', targetEntity: Agence::class)]
-    private Collection $agence;
+    protected ?string $type = null;
 
     #[ORM\ManyToOne(inversedBy: 'comptes')]
-    private ?Transaction $transaction = null;
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Agence $agence = null;
 
-    #[ORM\OneToMany(mappedBy: 'compte', targetEntity: Client::class)]
-    private Collection $client;
+    #[ORM\OneToMany(mappedBy: 'compte', targetEntity: Transaction::class)]
+    private Collection $transactions;
+
+    #[ORM\ManyToOne(inversedBy: 'comptes')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Clients $client = null;
+
+
 
     public function __construct()
     {
         $this->agence = new ArrayCollection();
         $this->client = new ArrayCollection();
+        $this->transactions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -80,75 +101,59 @@ class Compte
         return $this;
     }
 
-    /**
-     * @return Collection<int, Agence>
-     */
-    public function getAgence(): Collection
+    public function getAgence(): ?Agence
     {
         return $this->agence;
     }
 
-    public function addAgence(Agence $agence): self
+    public function setAgence(?Agence $agence): self
     {
-        if (!$this->agence->contains($agence)) {
-            $this->agence->add($agence);
-            $agence->setCompte($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAgence(Agence $agence): self
-    {
-        if ($this->agence->removeElement($agence)) {
-            // set the owning side to null (unless already changed)
-            if ($agence->getCompte() === $this) {
-                $agence->setCompte(null);
-            }
-        }
-
-        return $this;
-    }
-
-    public function getTransaction(): ?Transaction
-    {
-        return $this->transaction;
-    }
-
-    public function setTransaction(?Transaction $transaction): self
-    {
-        $this->transaction = $transaction;
+        $this->agence = $agence;
 
         return $this;
     }
 
     /**
-     * @return Collection<int, Client>
+     * @return Collection<int, Transaction>
      */
-    public function getClient(): Collection
+    public function getTransactions(): Collection
     {
-        return $this->client;
+        return $this->transactions;
     }
 
-    public function addClient(Client $client): self
+    public function addTransaction(Transaction $transaction): self
     {
-        if (!$this->client->contains($client)) {
-            $this->client->add($client);
-            $client->setCompte($this);
+        if (!$this->transactions->contains($transaction)) {
+            $this->transactions->add($transaction);
+            $transaction->setCompte($this);
         }
 
         return $this;
     }
 
-    public function removeClient(Client $client): self
+    public function removeTransaction(Transaction $transaction): self
     {
-        if ($this->client->removeElement($client)) {
+        if ($this->transactions->removeElement($transaction)) {
             // set the owning side to null (unless already changed)
-            if ($client->getCompte() === $this) {
-                $client->setCompte(null);
+            if ($transaction->getCompte() === $this) {
+                $transaction->setCompte(null);
             }
         }
 
         return $this;
     }
+
+    public function getClient(): ?Clients
+    {
+        return $this->client;
+    }
+
+    public function setClient(?Clients $client): self
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
+
 }

@@ -25,8 +25,10 @@ class Transaction
     #[ORM\Column(length: 12)]
     private ?string $type = null;
 
-    #[ORM\OneToMany(mappedBy: 'transaction', targetEntity: Compte::class)]
-    private Collection $comptes;
+    #[ORM\ManyToOne(inversedBy: 'transactions')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Compte $compte = null;
+
 
     public function __construct()
     {
@@ -74,33 +76,16 @@ class Transaction
         return $this;
     }
 
-    /**
-     * @return Collection<int, Compte>
-     */
-    public function getComptes(): Collection
+    public function getCompte(): ?Compte
     {
-        return $this->comptes;
+        return $this->compte;
     }
 
-    public function addCompte(Compte $compte): self
+    public function setCompte(?Compte $compte): self
     {
-        if (!$this->comptes->contains($compte)) {
-            $this->comptes->add($compte);
-            $compte->setTransaction($this);
-        }
+        $this->compte = $compte;
 
         return $this;
     }
 
-    public function removeCompte(Compte $compte): self
-    {
-        if ($this->comptes->removeElement($compte)) {
-            // set the owning side to null (unless already changed)
-            if ($compte->getTransaction() === $this) {
-                $compte->setTransaction(null);
-            }
-        }
-
-        return $this;
-    }
 }

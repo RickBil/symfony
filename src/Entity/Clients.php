@@ -2,66 +2,26 @@
 
 namespace App\Entity;
 
-use App\Repository\AgenceRepository;
+use App\Repository\ClientsRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: AgenceRepository::class)]
-class Agence
+#[ORM\Entity(repositoryClass: ClientsRepository::class)]
+class Clients extends User
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
-    #[ORM\Column(length: 12)]
-    private ?string $numero = null;
-
-    #[ORM\Column(length: 24)]
-    private ?string $adresse = null;
+    
 
     #[ORM\Column(length: 12)]
     private ?string $tel = null;
 
-    #[ORM\OneToMany(mappedBy: 'agence', targetEntity: Compte::class)]
+    #[ORM\OneToMany(mappedBy: 'client', targetEntity: Compte::class)]
     private Collection $comptes;
-
-
 
     public function __construct()
     {
+        $this->login[]="ROLE_CLIENTS";
         $this->comptes = new ArrayCollection();
-    }
-
-    
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-    public function getNumero(): ?string
-    {
-        return $this->numero;
-    }
-
-    public function setNumero(string $numero): self
-    {
-        $this->numero = $numero;
-
-        return $this;
-    }
-
-    public function getAdresse(): ?string
-    {
-        return $this->adresse;
-    }
-
-    public function setAdresse(string $adresse): self
-    {
-        $this->adresse = $adresse;
-
-        return $this;
     }
 
     public function getTel(): ?string
@@ -88,7 +48,7 @@ class Agence
     {
         if (!$this->comptes->contains($compte)) {
             $this->comptes->add($compte);
-            $compte->setAgence($this);
+            $compte->setClient($this);
         }
 
         return $this;
@@ -98,12 +58,11 @@ class Agence
     {
         if ($this->comptes->removeElement($compte)) {
             // set the owning side to null (unless already changed)
-            if ($compte->getAgence() === $this) {
-                $compte->setAgence(null);
+            if ($compte->getClient() === $this) {
+                $compte->setClient(null);
             }
         }
 
         return $this;
     }
-    
 }

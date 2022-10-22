@@ -6,24 +6,14 @@ use App\Repository\ChequeRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ChequeRepository::class)]
-class Cheque
+class Cheque extends Compte
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
     #[ORM\Column]
     private ?float $frais = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-    private ?CartGab $cartGab = null;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
+    #[ORM\OneToOne(inversedBy: 'cheque', cascade: ['persist', 'remove'])]
+    private ?CartGab $carte = null;
+   
     public function getFrais(): ?float
     {
         return $this->frais;
@@ -36,15 +26,18 @@ class Cheque
         return $this;
     }
 
-    public function getCartGab(): ?CartGab
+    public function getCarte(): ?CartGab
     {
-        return $this->cartGab;
+        return $this->carte;
     }
 
-    public function setCartGab(?CartGab $cartGab): self
+    public function setCarte(?CartGab $carte): self
     {
-        $this->cartGab = $cartGab;
+        $this->carte = $carte;
 
         return $this;
     }
+
+   
+
 }
