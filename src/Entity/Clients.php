@@ -20,7 +20,7 @@ class Clients extends User
 
     public function __construct()
     {
-        $this->login[]="ROLE_CLIENTS";
+        $this->roles[]="ROLE_CLIENTS";
         $this->comptes = new ArrayCollection();
     }
 

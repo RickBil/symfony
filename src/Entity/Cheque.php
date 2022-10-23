@@ -13,7 +13,11 @@ class Cheque extends Compte
 
     #[ORM\OneToOne(inversedBy: 'cheque', cascade: ['persist', 'remove'])]
     private ?CartGab $carte = null;
-   
+
+    public function __construct(){
+        $this->type="Cheque";
+    }
+    
     public function getFrais(): ?float
     {
         return $this->frais;

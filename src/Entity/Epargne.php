@@ -12,6 +12,9 @@ class Epargne extends Compte
     #[ORM\Column]
     private ?float $taux = null;
 
+    public function __construct(){
+        $this->type="Epargne";
+    }
     public function getTaux(): ?float
     {
         return $this->taux;
