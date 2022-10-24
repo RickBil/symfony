@@ -12,7 +12,7 @@ class AgenceController extends AbstractController
     #[Route('/g/agence', name: 'app_g_agence')]
     public function index( AgenceRepository $repositoryAg): Response
     {
-        // return $this->render('agence/index.html.twig');
-        dd($repositoryAg->findAll());
+        return $this->render('agence/index.html.twig');
+        
     }
 }
