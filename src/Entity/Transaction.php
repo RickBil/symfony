@@ -32,7 +32,7 @@ class Transaction
 
     public function __construct()
     {
-        $this->comptes = new ArrayCollection();
+        $this->compte = new ArrayCollection();
     }
 
     public function getId(): ?int

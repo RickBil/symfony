@@ -51,8 +51,6 @@ class Compte
     #[ORM\JoinColumn(nullable: false)]
     private ?Clients $client = null;
 
-
-
     public function __construct()
     {
         $this->agence = new ArrayCollection();
