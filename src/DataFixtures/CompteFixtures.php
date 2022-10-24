@@ -6,6 +6,7 @@ use App\Entity\Agence;
 use App\Entity\Cheque;
 use App\Entity\Epargne;
 use App\Repository\AgenceRepository;
+use App\Repository\CartGabRepository;
 use App\Repository\ClientsRepository;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -31,6 +32,7 @@ class CompteFixtures extends Fixture
             }else{
                 $compte=new Cheque;
                 $compte->setFrais(0.08);
+                
             }
             $compte->setNumero("CPT_".$i);
             $compte->setSolde(rand(100000,500000));

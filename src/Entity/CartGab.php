@@ -13,8 +13,6 @@ class CartGab
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    private ?int $numero = null;
 
     #[ORM\Column(length: 12)]
     private ?string $dateExp = null;
@@ -22,23 +20,15 @@ class CartGab
     #[ORM\OneToOne(mappedBy: 'carte', cascade: ['persist', 'remove'])]
     private ?Cheque $cheque = null;
 
+    #[ORM\Column(length: 20)]
+    private ?string $numero = null;
+
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getNumero(): ?int
-    {
-        return $this->numero;
-    }
-
-    public function setNumero(int $numero): self
-    {
-        $this->numero = $numero;
-
-        return $this;
-    }
 
     public function getDateExp(): ?string
     {
@@ -70,6 +60,18 @@ class CartGab
         }
 
         $this->cheque = $cheque;
+
+        return $this;
+    }
+
+    public function getNumero(): ?string
+    {
+        return $this->numero;
+    }
+
+    public function setNumero(string $numero): self
+    {
+        $this->numero = $numero;
 
         return $this;
     }

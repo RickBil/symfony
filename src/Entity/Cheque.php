@@ -42,6 +42,6 @@ class Cheque extends Compte
         return $this;
     }
 
-   
+
 
 }
