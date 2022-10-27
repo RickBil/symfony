@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AgenceController extends AbstractController
 {
-    #[Route('/g/agence', name: 'app_g_agence')]
+    #[Route('/agence', name: 'app_agence')]
     public function index(): Response
     {
         return $this->render('agence/index.html.twig');

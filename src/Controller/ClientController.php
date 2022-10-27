@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ClientController extends AbstractController
 {
-    #[Route('/c/client', name: 'app_client')]
+    #[Route('/client', name: 'app_client')]
     public function index(): Response
     {
         //     'controller_name' => 'ClientController',
