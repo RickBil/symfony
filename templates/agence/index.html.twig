@@ -1,1 +1,74 @@
 {% extends 'base.html.twig' %}
+
+
+{% block content_for_layout %}
+        <h1 class="bg-secondary rounded h-100 p-3"> Gestions des Agences </h1>
+
+
+                    <div class="col-sm-12 mb-4 mt-4">
+                        <div class="bg-secondary rounded h-100 p-4">
+                            <h6 class="mb-4">Creer Agences</h6>
+                    <form class=" form-inline"  method="POST">
+                        <table>
+                            <tr>
+                                <th >
+                                    <th><label for="adresseAgence" class="form-label">Adresse</label></th>
+                                    <th><input type="text" class="form-control" id="adresseAgence"></th>
+                                </th>
+                                <th>
+                                    <th><label for="telAgence" class="form-label">Téléphone</label></th>
+                                    <th><input type="tel" class="form-control" id="telAgence"></th>
+                                </th>
+                                <th>
+                                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                                </th>
+                            </tr>
+                        </table>
+                    </form>
+                            {# <form class=" form-inline">
+                                <div class="form-group">    action="{{path('/agence/create')}}
+                                    <label for="adresseAgence" class="form-label">Adresse</label>
+                                    <input type="text" class="form-control" id="adresseAgence"
+                                    
+                                </div>
+                                <div class="form-group">
+                                    <label for="telAgence" class="form-label">Téléphone</label>
+                                    <input type="tel" class="form-control" id="telAgence">
+                                </div>
+                                
+                                <button type="submit" class="btn btn-primary">Enregistrer</button>
+                            </form> #}
+                    </div>
+                </div>
+
+    {# Liste des agence #}
+	    <div class="col-sm-12">
+            <div class="bg-secondary rounded h-100 p-4">
+                            <h5 class="mb-4">Table Agences</h5>
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        
+                                        <th scope="col">Numero</th>
+                                        <th scope="col">Adresse</th>
+                                        <th scope="col">Téléphone</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for data in datas %}
+                                    
+                                    <tr>
+                                        
+                                        <td>{{data.numero}}</td>
+                                        <td>{{data.adresse}}</td>
+                                        <td>{{data.tel}}</td>
+                                        <td>
+                                        <button type="submit" class="btn btn-primary">Edit</button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+            </div>
+        </div>	
+{% endblock content_for_layout %}
